@@ -1,0 +1,73 @@
+﻿@*model*@
+@model Cinema
+
+@*viewData*@
+@{
+    ViewData["Title"] = "Add a new Cinema";
+}
+
+@*HTML Code*@
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Add a New Cinema</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                @*when we hit submit we send the req to the Create-Method*@
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">
+                    </div>
+                    <div class="form-group text-center">
+                        <img class="border-info rounded-circle" style="max-width: 150px" id="CinemaLogoPreview" />
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Logo" class="control-label"></label>
+                        <input asp-for="Logo" class="form-control" />
+                        @*in case no-validation we will show a msg: *@
+                        <span asp-validation-for="Logo" class="text-danger"> </span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        @*in case no-validation we will show a msg: *@
+                        <span asp-validation-for="Name" class="text-danger"> </span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        @*in case no-validation we will show a msg: *@
+                        <span asp-validation-for="Description" class="text-danger"> </span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                        @*No-controller bc Create is in CineamsFolder-by default it's going to be CinemaController:*@
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*JS CODE - JQuery*@
+
+@*section named Scripts*@
+@section Scripts{
+<script>
+    //when the doc is ready
+    $(document).ready(function() {
+         var output = document.getElementById('CinemaLogoPreview');
+        output.src = $("#Logo").val();
+    })
+
+    //whenever the ProfilePictureURL field is updated / we listen a ChangeEvent,
+    // we call function
+    $("#Logo").on("change", function() {
+        var output = document.getElementById('CinemaLogoPreview');
+        output.src = $(this).val();
+    })
+</script>
+}

@@ -1,0 +1,97 @@
+﻿@*Define model*@
+@*or the data-type that you want to display within this file*@
+@*which is going to be a list of actors*@
+@*EXAMPLE:  @model List<Actor> //data-type: a list of actors  *@
+@model IEnumerable<Movie> //data-type: a dynamic list of producers
+
+
+
+@*Define the ViewData*@
+@*the data that you wanna have in the browser tab*@
+@*or you can define here like properties that you wanna use in your View*@
+@{
+    ViewData["Title"] = "List of Movies";
+}
+
+
+@*Write code*@
+@*inside the html code we can have C# code*@
+
+<div class="row">
+    @foreach (var item in Model)
+    {   @*card*@
+        <div class="col-md-4 col-xs-6 border-primary mb-3">
+            @*4spaces in md-sizze-screem / 6 in  xs/*@
+            <div class="card mb-3" style="max-width: 540px;">
+                @*width of this card max 540px*@
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Name
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                    {
+                                        <a class="text-white float-right"
+                                            asp-action="Edit"
+                                            asp-route-id="@item.Id">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    }
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@item.ImageURL" width="100%" alt="@item.Name"> @*picture of the movie*@
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text"><b>Cinema: </b>@item.Cinema.Name</p>
+                            <p class="card-text"><b>Category: </b>@item.MovieCategory</p>
+                            <p class="card-text"><b>Start Date: </b>@item.StartDate.ToString("dd MMM yy")</p>
+                            <p class="card-text"><b>End Date: </b>@item.EndDate.ToString("dd MMM yy")</p>
+                            <p class="card-text ">
+                                <b>Status: </b>
+                                @if (DateTime.Now >= item.StartDate && DateTime.Now <= item.EndDate)
+                                {
+                                    <span class="badge bg-success text-white">AVAILABLE</span>
+                                }
+                                else if (DateTime.Now > item.EndDate)
+                                {
+                                    <span class="badge bg-danger text-white">EXPIRED</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary text-white">UPCOMING</span>
+                                }
+                            </p>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right"
+                               asp-controller="Movies"
+                               asp-action="Details"
+                               asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Details
+                                </a>
+                                <a class="btn btn-success text-white @((DateTime.Now > item.EndDate) ? "disabled" : "")"
+                               asp-controller="Orders"
+                               asp-action="AddItemToShoppingCart"
+                               asp-route-id="@item.Id">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c")) @*c = currency*@
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@await Html.PartialAsync("_CreateItem", "Movies")

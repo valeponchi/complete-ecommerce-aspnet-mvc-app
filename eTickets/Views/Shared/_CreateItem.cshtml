@@ -1,0 +1,13 @@
+﻿@*//btn to "Add New" item *@
+@*//the asp-controller changes depending on where this btn is used*@
+@*//Compare this code with the end-part of index of producers to have an idea of how it works *@
+
+@model string;
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div style="position: fixed; right: 25px; bottom: 25px;" class="text-white">
+        <a asp-controller="@Model" asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New
+        </a>
+    </div>
+}

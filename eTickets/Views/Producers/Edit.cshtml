@@ -1,0 +1,73 @@
+﻿@*model*@
+@model Producer
+
+@*viewData*@
+@{
+    ViewData["Title"] = "Update Producer";
+}
+
+@*HTML Code*@
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Update Producer</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                @*when we hit submit we send the req to the Create-Method*@
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger">
+                    </div>
+                    <div class="form-group text-center">
+                        <img class="border-info rounded-circle" style="max-width: 150px" id="ProfilePicturePreview" />
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProfilePictureURL" class="control-label"></label>
+                        <input asp-for="ProfilePictureURL" class="form-control" />
+                        @*in case no-validation we will show a msg: *@
+                        <span asp-validation-for="ProfilePictureURL" class="text-danger"> </span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        @*in case no-validation we will show a msg: *@
+                        <span asp-validation-for="FullName" class="text-danger"> </span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bio" class="control-label"></label>
+                        <input asp-for="Bio" class="form-control" />
+                        @*in case no-validation we will show a msg: *@
+                        <span asp-validation-for="Bio" class="text-danger"> </span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-outline-success float-right" />
+                        @*No-controller bc Create is in ProducerFolder-by default it's going to be ProducerController:*@
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*JS CODE - JQuery*@
+
+@*section named Scripts*@
+@section Scripts{
+<script>
+    //when the doc is ready
+    $(document).ready(function() {
+         var output = document.getElementById('ProfilePicturePreview');
+        output.src = $("#ProfilePictureURL").val();
+    })
+
+    //whenever the ProfilePictureURL field is updated / we listen a ChangeEvent,
+    // we call function
+    $("#ProfilePictureURL").on("change", function() {
+        var output = document.getElementById('ProfilePicturePreview');
+        output.src = $(this).val();
+    })
+</script>
+}
